@@ -205,3 +205,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+data/*
+gene_names/*
+bed_comparison/*
+data.xlsx
+*.txt
+papers/*
+*.png
+*.json
