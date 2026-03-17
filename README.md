@@ -1,3 +1,5 @@
+Clone the repository. 
+
 <details>
 <summary>GWAS-to-Gene-Network Pipeline (stringDB)</summary>
 
@@ -243,6 +245,24 @@ APOE, APOC1, NECTIN2, TOMM40, LNCOB1, plus CEACAM/IGSF/PVR locus genes on chr19.
 
 </details>
 
+
+On MacOS (Silicone) environment
+```bash
+cd WGCNA
+conda create -n wgcna-git-test                                           
+conda activate wgcna-git-test
+conda config --env --set subdir osx-64
+conda env update -f environment.yml
+conda install bioconda::plink2
+```
+
+On other enviromnets
+```bash
+cd WGCNA
+conda env create -f environment.yml -n myenv
+conda install bioconda::plink2
+```
+
 <details>
 <summary>GWAS-to-WGCNA Integrative Genomics Pipeline</summary>
 
@@ -466,3 +486,4 @@ A prioritised ranking for module 3 (by kME + GWAS signal) is in `wgcna/results/m
 | Gene annotation | Ensembl v115, `Homo_sapiens.GRCh38.115.gtf.gz` |
 
 </details>
+
