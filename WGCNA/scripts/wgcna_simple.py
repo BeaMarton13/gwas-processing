@@ -4,8 +4,8 @@ import pandas as pd
 from scipy.cluster.hierarchy import linkage, fcluster
 from scipy.spatial.distance import squareform
 
-IN = "project/wgcna/mat/gene_by_study.nomagma.top8k.z.tsv"
-OUT = "project/wgcna/results/modules.simple.tsv"
+IN = "./wgcna/mat/gene_by_study.nomagma.top8k.z.tsv"
+OUT = "./wgcna/results/modules.simple.tsv"
 
 POWER = 6          # try 4,6,8
 MIN_MODULE = 30    # minimum genes in a module

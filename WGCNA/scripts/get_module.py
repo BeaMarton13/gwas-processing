@@ -1,12 +1,12 @@
 import pandas as pd
 
 mods = pd.read_csv(
-    "project/wgcna/results/modules.simple.tsv",
+    "./wgcna/results/modules.simple.tsv",
     sep="\t"
 )
 
 names = pd.read_csv(
-    "project/annotation/ensembl115_gene_id_to_name.tsv",
+    "./annotation/ensembl115_gene_id_to_name.tsv",
     sep="\t"
 )
 

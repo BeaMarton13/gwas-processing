@@ -1,66 +1,11 @@
-# #!/usr/bin/env python3
-# import pandas as pd
-# import numpy as np
-
-# MAT = "project/wgcna/mat/gene_by_study.nomagma.top8k.z.tsv"
-# MOD = "project/wgcna/results/modules.simple.tsv"
-# OUT = "project/wgcna/results/module_summary.tsv"
-# HUBS = "project/wgcna/results/module_hubs.tsv"
-
-# def main():
-#     X = pd.read_csv(MAT, sep="\t", index_col=0)
-#     M = pd.read_csv(MOD, sep="\t")
-
-#     # module eigengene = first PC (with only 4 studies, SVD is fine)
-#     summaries = []
-#     hubs = []
-
-#     for mod, genes in M.groupby("module")["gene"]:
-#         if mod == 0:
-#             continue
-#         g = [x for x in genes if x in X.index]
-#         if len(g) < 5:
-#             continue
-
-#         sub = X.loc[g].values  # genes x 4
-#         # First PC across genes -> module eigengene across studies
-#         U, S, Vt = np.linalg.svd(sub - sub.mean(0), full_matrices=False)
-#         eig = Vt[0, :]  # length 4
-
-#         # hub = highest correlation with eigengene
-#         # compute per gene correlation to eig
-#         e = eig
-#         cor = np.corrcoef(sub, e.reshape(1,-1))[0:sub.shape[0], -1]
-#         hub_idx = np.argsort(-np.abs(cor))[:10]
-#         for i in hub_idx:
-#             hubs.append({"module": mod, "gene": g[i], "kME_abs": float(np.abs(cor[i]))})
-
-#         summaries.append({
-#             "module": mod,
-#             "n_genes": len(g),
-#             "eig_study1": float(eig[0]),
-#             "eig_study2": float(eig[1]),
-#             "eig_study3": float(eig[2]),
-#             "eig_study4": float(eig[3]),
-#         })
-
-#     pd.DataFrame(summaries).sort_values("n_genes", ascending=False).to_csv(OUT, sep="\t", index=False)
-#     pd.DataFrame(hubs).sort_values(["module","kME_abs"], ascending=[True,False]).to_csv(HUBS, sep="\t", index=False)
-#     print("Wrote:", OUT)
-#     print("Wrote:", HUBS)
-
-# if __name__ == "__main__":
-#     main()
-
-
 #!/usr/bin/env python3
 import pandas as pd
 import numpy as np
 
-MAT  = "project/wgcna/mat/gene_by_study.nomagma.top8k.z.tsv"
-MOD  = "project/wgcna/results/modules.simple.tsv"
-OUT  = "project/wgcna/results/module_summary.tsv"
-HUBS = "project/wgcna/results/module_hubs.tsv"
+MAT  = "./wgcna/mat/gene_by_study.nomagma.top8k.z.tsv"
+MOD  = "./wgcna/results/modules.simple.tsv"
+OUT  = "./wgcna/results/module_summary.tsv"
+HUBS = "./wgcna/results/module_hubs.tsv"
 
 MIN_GENES = 5
 TOP_HUBS = 10
