@@ -1,3 +1,25 @@
+"""
+Filter WGCNA module genes to high-confidence candidates and save per-module TSVs.
+
+For each module, merges gene assignments with GWAS signal strength (max |signed Z|
+across all studies), kME hub scores, and gene name/biotype annotations. Retains
+only genes that have a known gene name and a maximum absolute Z-score above
+Z_THRESHOLD. Results are printed to stdout and saved to per-module TSV files.
+
+Settings (edit at top of file):
+    USE_SIGNED_Z   bool  — use the signed Z-score matrix (True) or min-log10 (False)
+    Z_THRESHOLD    float — minimum max |Z| to classify a gene as high-confidence
+    KME_THRESHOLD  float — optional minimum |kME| filter (currently disabled)
+
+Inputs (relative to project root):
+    wgcna/results/modules.simple.tsv
+    wgcna/results/module_hubs.tsv
+    annotation/ensembl115_gene_id_to_name.tsv
+    wgcna/mat/gene_by_study.nomagma.signed_z.tsv
+
+Outputs:
+    wgcna/results/module_<N>_high_confidence_genes.tsv  for each module N
+"""
 
 import pandas as pd
 import numpy as np

@@ -1,4 +1,17 @@
 #!/usr/bin/env python3
+"""
+Compute module eigengenes, kME scores, and hub genes for each WGCNA module.
+
+For each module in modules.simple.tsv, the module eigengene is derived as the
+first right singular vector (SVD) of the mean-centred gene × study sub-matrix.
+Per-gene kME (module membership) is the Pearson correlation of each gene's
+Z-score profile with the eigengene. The top TOP_HUBS genes by |kME| are
+reported as hub genes.
+
+Outputs:
+    wgcna/results/module_summary.tsv  — module sizes + eigengene loadings per study
+    wgcna/results/module_hubs.tsv     — top hub genes per module ranked by |kME|
+"""
 import pandas as pd
 import numpy as np
 
@@ -35,6 +48,22 @@ def rowwise_corr_with_vector(A: np.ndarray, v: np.ndarray) -> np.ndarray:
     return cor
 
 def main():
+    """Compute and save module eigengenes, kME scores, and hub genes.
+
+    For each module (excluding module SKIP_MODULE, typically the grey/unassigned
+    module), extracts the gene sub-matrix from the top-8k Z-score matrix, removes
+    genes with zero variance, computes the module eigengene via SVD, correlates
+    each gene with the eigengene to produce kME scores, and selects the top
+    TOP_HUBS genes by |kME| as hub genes.
+
+    Writes:
+        module_summary.tsv — one row per module with n_genes and eigengene loadings
+            for each study column (columns: module, n_genes, eig_<study>...).
+        module_hubs.tsv    — one row per hub gene with module, gene ID, and kME_abs,
+            sorted by module then descending |kME|.
+
+    Modules with fewer than MIN_GENES genes after variance filtering are skipped.
+    """
     X = pd.read_csv(MAT, sep="\t", index_col=0)
     M = pd.read_csv(MOD, sep="\t")
 

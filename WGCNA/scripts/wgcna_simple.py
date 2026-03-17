@@ -1,4 +1,17 @@
 #!/usr/bin/env python3
+"""
+WGCNA-style gene co-signal network clustering using signed Z-score profiles.
+
+Reads the top-8k gene × study Z-score matrix, computes all-vs-all Pearson
+correlations across studies, applies a soft-threshold to build an unsigned
+adjacency matrix (A = |r|^POWER), converts to a distance matrix (D = 1 - A),
+and performs hierarchical clustering (average linkage). The dendrogram is cut
+at `cut_height` to define modules; modules smaller than MIN_MODULE genes are
+merged into module 0 (grey/unassigned).
+
+Output:
+    wgcna/results/modules.simple.tsv  — two columns: gene, module (integer)
+"""
 import numpy as np
 import pandas as pd
 from scipy.cluster.hierarchy import linkage, fcluster
@@ -12,6 +25,21 @@ MIN_MODULE = 30    # minimum genes in a module
 CORR_TYPE = "pearson"  # pearson is fine with 4 columns
 
 def main():
+    """Run WGCNA-style clustering and write module assignments.
+
+    Pipeline:
+        1. Load the top-8k gene × study signed Z-score matrix.
+        2. Compute the gene-gene Pearson correlation matrix (genes as rows,
+           studies as columns). NaN correlations are replaced with 0.
+        3. Build an unsigned soft-threshold adjacency: A = |r|^POWER.
+           Self-connections are zeroed out.
+        4. Convert to a distance matrix: D = 1 - A, clipped to [0, 1].
+        5. Perform hierarchical clustering with average linkage.
+        6. Cut the dendrogram at `cut_height` using the 'distance' criterion.
+        7. Reassign genes in modules smaller than MIN_MODULE to module 0
+           (the grey/unassigned module).
+        8. Write the gene → module mapping to OUT.
+    """
     X = pd.read_csv(IN, sep="\t", index_col=0)  # genes x studies
     genes = X.index
 

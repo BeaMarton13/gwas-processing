@@ -1,18 +1,55 @@
 #!/usr/bin/env python3
+"""
+Build a MAGMA-format gene location file from a gzipped Ensembl GTF.
+
+Parses only ‘gene’ feature rows, filters to canonical chromosomes (1–22, X, Y),
+strips Ensembl version suffixes, deduplicates on gene ID, and writes a
+tab-separated file with columns: GENEID, CHR, START, END, STRAND.
+
+Usage:
+    make_gene_loc_from_gtf.py <input.gtf.gz> <output.gene.loc>
+"""
 import gzip
 import re
 import sys
 
 def parse_attrs(attr_str: str) -> dict:
-    # GTF attributes look like: key "value"; key2 "value2";
+    """Parse a GTF attribute string into a key/value dictionary.
+
+    Extracts all `key "value"` pairs from the semicolon-separated attribute
+    field (column 9) of a GTF record.
+
+    Args:
+        attr_str: The raw attribute string from a GTF line, e.g.
+            ‘gene_id "ENSG00000123456.3"; gene_name "BRCA2"; gene_biotype "protein_coding";’
+
+    Returns:
+        dict[str, str]: Mapping of attribute keys to their unquoted values.
+    """
     attrs = {}
-    for m in re.finditer(r'(\S+)\s+"([^"]+)"', attr_str):
+    for m in re.finditer(r’(\S+)\s+"([^"]+)"’, attr_str):
         attrs[m.group(1)] = m.group(2)
     return attrs
 
 def main(gtf_gz: str, out_loc: str):
-    # Output columns: GENEID  CHR  START  END  STRAND  (tab-separated)
-    # We'll use Ensembl gene_id (optionally with version removed) so it’s stable.
+    """Parse an Ensembl GTF and write a MAGMA gene location file.
+
+    Streams through the gzipped GTF and processes only ‘gene’ feature rows.
+    Skips comment lines, malformed records, mitochondrial contigs (MT/M), and
+    any non-standard chromosomes (i.e. not 1–22, X, or Y). Strips Ensembl
+    version suffixes from gene IDs and silently skips duplicate gene IDs.
+
+    Output columns (tab-separated, no header):
+        GENEID   Ensembl gene ID without version suffix
+        CHR      Chromosome (e.g. 1, X)
+        START    1-based start coordinate (from GTF)
+        END      End coordinate (from GTF)
+        STRAND   + or -
+
+    Args:
+        gtf_gz:  Path to a gzipped Ensembl GTF file.
+        out_loc: Path for the output gene location file.
+    """
     seen = set()
     with gzip.open(gtf_gz, "rt") as f, open(out_loc, "w") as out:
         for line in f:

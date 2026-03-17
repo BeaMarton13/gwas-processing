@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+"""
+Build a gene × study signal matrix from GWAS summary statistics without MAGMA.
+
+For each GWAS study (*.tsv.gz in ./gwas_raw/), SNPs are mapped to genes using a
+±WINDOW bp interval around each Ensembl gene body. Per-gene signal is aggregated
+using Stouffer's signed Z-score method (Z = beta / SE, then summed and normalised
+by sqrt(N_snps)). The resulting matrix is column-standardised and written to
+wgcna/mat/gene_by_study.nomagma.signed_z.tsv for use as WGCNA input.
+"""
 import glob, os
 import pandas as pd
 import numpy as np
@@ -8,6 +17,16 @@ GTF_LOC = "/magma/ref/ensembl115.GRCh38.gene.loc"
 WINDOW = 10_000  # +/-10kb
 
 def load_genes():
+    """Load gene coordinates from the MAGMA gene location file and expand by WINDOW.
+
+    Reads the tab-separated gene location file (columns: gene, chr, start, end, strand),
+    strips any 'chr' prefix from chromosome names, and expands each gene interval by
+    WINDOW bp upstream and downstream to capture nearby regulatory SNPs. Intervals are
+    clipped at 0 to avoid negative start positions.
+
+    Returns:
+        pr.PyRanges: PyRanges object with columns Chromosome, Start, End, gene.
+    """
     genes = pd.read_csv(GTF_LOC, sep="\t", header=None,
                         names=["gene","chr","start","end","strand"])
     genes["Chromosome"] = genes["chr"].astype(str).str.replace("^chr","", regex=True)
@@ -18,6 +37,28 @@ def load_genes():
 GENES = load_genes()
 
 def gene_scores_signed_z(gwas_tsv_gz: str) -> pd.Series:
+    """Compute a signed Stouffer Z-score per gene from a GWAS summary statistics file.
+
+    Reads the gzipped TSV, drops rows with missing chromosome, position, beta, or
+    standard error values, and computes a per-SNP Z-score (Z = beta / SE). SNPs are
+    then mapped to genes using a genomic interval join against the pre-loaded GENES
+    PyRanges (gene bodies ± WINDOW bp). For each gene, all overlapping SNP Z-scores
+    are aggregated via Stouffer's method:
+
+        gene_Z = sum(Z_snps) / sqrt(N_snps)
+
+    Args:
+        gwas_tsv_gz: Path to a gzipped GWAS summary statistics TSV file. Expected
+            columns include 'chromosome', 'base_pair_location', 'beta', and
+            'standard_error'.
+
+    Returns:
+        pd.Series: Series indexed by Ensembl gene ID with Stouffer Z-scores,
+            named 'score'.
+
+    Raises:
+        ValueError: If no SNPs can be mapped to any gene after the interval join.
+    """
     g = pd.read_csv(gwas_tsv_gz, sep="\t", compression="gzip", low_memory=False)
 
     g = g.dropna(subset=[
@@ -53,6 +94,17 @@ def gene_scores_signed_z(gwas_tsv_gz: str) -> pd.Series:
     return gene_z.rename("score")
 
 def main():
+    """Build and save the gene × study signed Z-score matrix.
+
+    Discovers all GWAS summary statistics files matching ./gwas_raw/*.tsv.gz,
+    computes a signed Stouffer Z-score vector per study via gene_scores_signed_z(),
+    and joins them into a matrix on the inner set of genes (genes present in all
+    studies). The matrix is column-standardised (zero mean, unit variance) before
+    being written to wgcna/mat/gene_by_study.nomagma.signed_z.tsv.
+
+    Raises:
+        SystemExit: If fewer than two input files are found in ./gwas_raw/.
+    """
     inputs = sorted(glob.glob("./gwas_raw/*.tsv.gz"))
     if len(inputs) < 2:
         raise SystemExit("Put your GWAS .tsv.gz files in ./gwas_raw/")

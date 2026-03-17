@@ -1,3 +1,17 @@
+"""
+Print all WGCNA module memberships and search for candidate genes of interest.
+
+Loads the module assignment table (modules.simple.tsv) and the Ensembl gene
+ID → name/biotype annotation, then for each module prints all genes with known
+names sorted alphabetically. If any gene in `selected_genes` is present in a
+module, that module is flagged.
+
+Intended as an interactive inspection script; output is written to stdout only.
+
+Inputs (relative to project root):
+    wgcna/results/modules.simple.tsv
+    annotation/ensembl115_gene_id_to_name.tsv
+"""
 import pandas as pd
 
 mods = pd.read_csv(
