@@ -319,10 +319,6 @@ bash scripts/generate_chrs.sh
 
 Converts each per-chromosome VCF into PLINK1 BED format using `plink2`. Filters to biallelic, ACGT-only SNPs. Output: `magma/ref/plink_chr/chr{1..22}.{bed,bim,fam}`.
 
-For merging all chromosomes into a genome-wide reference, use `plink2 --pmerge-list` with `magma/ref/pmerge_list.txt` (the `merge_chrs.sh` script uses `--bmerge` which was retired in plink2 and will fail). The merged reference panels are already present in `magma/ref/`:
-- `REF_GRCh38.{pgen,psam,pvar}` — genome-wide pgen format
-- `REF_GRCh38_ids.{bed,bim,fam}` — BED format with `CHR:POS:A1:A2` variant IDs, ready for MAGMA `--bfile`
-
 ---
 
 ### Step 3 — Build Gene Annotations
@@ -347,6 +343,7 @@ python scripts/make_gene_loc_from_gtf.py \
 ### Step 4 — Preprocess GWAS Summary Statistics
 
 ```bash
+pip install pandas
 bash scripts/run_gwas_to_magma.sh
 ```
 
