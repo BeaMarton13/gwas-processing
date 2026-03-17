@@ -1,9 +1,9 @@
 #!/bin/bash
 
-mkdir -p project/magma/ref/plink_chr
+mkdir -p ./magma/ref/plink_chr
 
 for chr in {1..22}; do
-  vcf="./project/ld_vcf/ALL.chr${chr}.shapeit2_integrated_snvindels_v2a_27022019.GRCh38.phased.vcf.gz"
+  vcf="./ld_vcf/ALL.chr${chr}.shapeit2_integrated_snvindels_v2a_27022019.GRCh38.phased.vcf.gz"
 
   if [[ ! -f "$vcf" ]]; then
     echo "WARNING: $vcf not found, skipping"
@@ -16,5 +16,5 @@ for chr in {1..22}; do
     --max-alleles 2 \
     --snps-only just-acgt \
     --make-bed \
-    --out project/magma/ref/plink_chr/chr${chr}
+    --out ./magma/ref/plink_chr/chr${chr}
 done

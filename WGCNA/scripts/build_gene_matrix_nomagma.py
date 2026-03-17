@@ -55,7 +55,7 @@ def gene_scores_signed_z(gwas_tsv_gz: str) -> pd.Series:
 def main():
     inputs = sorted(glob.glob("./gwas_raw/*.tsv.gz"))
     if len(inputs) < 2:
-        raise SystemExit("Put your GWAS .tsv.gz files in project/gwas_raw/")
+        raise SystemExit("Put your GWAS .tsv.gz files in ./gwas_raw/")
 
     mats = []
     for f in inputs:

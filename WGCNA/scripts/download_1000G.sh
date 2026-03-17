@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OUTDIR="${1:-project/ld_vcf}"
+OUTDIR="${1:-./ld_vcf}"
 mkdir -p "$OUTDIR"
 
 # Primary: IGSR/EBI (GRCh38 phased biallelic SNV+INDEL; 2019-03-12 release)
