@@ -344,6 +344,7 @@ python scripts/make_gene_loc_from_gtf.py \
 
 ```bash
 pip install pandas
+mkdir gwas_clean
 bash scripts/run_gwas_to_magma.sh
 ```
 
