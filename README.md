@@ -1,3 +1,5 @@
+Clone the repository. 
+
 <details>
 <summary>GWAS-to-Gene-Network Pipeline (stringDB)</summary>
 
@@ -243,6 +245,24 @@ APOE, APOC1, NECTIN2, TOMM40, LNCOB1, plus CEACAM/IGSF/PVR locus genes on chr19.
 
 </details>
 
+
+On MacOS (Silicone) environment
+```bash
+cd WGCNA
+conda create -n wgcna-git-test                                           
+conda activate wgcna-git-test
+conda config --env --set subdir osx-64
+conda env update -f environment.yml
+conda install bioconda::plink2
+```
+
+On other enviromnets
+```bash
+cd WGCNA
+conda env create -f environment.yml -n myenv
+conda install bioconda::plink2
+```
+
 <details>
 <summary>GWAS-to-WGCNA Integrative Genomics Pipeline</summary>
 
@@ -299,17 +319,20 @@ bash scripts/generate_chrs.sh
 
 Converts each per-chromosome VCF into PLINK1 BED format using `plink2`. Filters to biallelic, ACGT-only SNPs. Output: `magma/ref/plink_chr/chr{1..22}.{bed,bim,fam}`.
 
-For merging all chromosomes into a genome-wide reference, use `plink2 --pmerge-list` with `magma/ref/pmerge_list.txt` (the `merge_chrs.sh` script uses `--bmerge` which was retired in plink2 and will fail). The merged reference panels are already present in `magma/ref/`:
-- `REF_GRCh38.{pgen,psam,pvar}` — genome-wide pgen format
-- `REF_GRCh38_ids.{bed,bim,fam}` — BED format with `CHR:POS:A1:A2` variant IDs, ready for MAGMA `--bfile`
-
 ---
 
 ### Step 3 — Build Gene Annotations
 
+Create a `gtf` folder and download the [annotation data available for human](https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz) and place it into the previously created `gtf` folder.
+
 ```bash
-python scripts/gtf_gene_id_to_name.py
-python scripts/make_gene_loc_from_gtf.py
+mkdir annotation
+python scripts/gtf_gene_id_to_name.py \
+  gtf/Homo_sapiens.GRCh38.115.gtf.gz \
+  annotation/ensembl115_gene_id_to_name.tsv
+python scripts/make_gene_loc_from_gtf.py \
+  gtf/Homo_sapiens.GRCh38.115.gtf.gz \ 
+  magma/ref/ensembl115.GRCh38.gene.loc 
 ```
 
 - `gtf_gene_id_to_name.py` — Parses `gtf/Homo_sapiens.GRCh38.115.gtf.gz` and outputs `annotation/ensembl115_gene_id_to_name.tsv` (Ensembl ID → gene symbol + biotype).
@@ -320,6 +343,7 @@ python scripts/make_gene_loc_from_gtf.py
 ### Step 4 — Preprocess GWAS Summary Statistics
 
 ```bash
+pip install pandas
 bash scripts/run_gwas_to_magma.sh
 ```
 
@@ -466,3 +490,4 @@ A prioritised ranking for module 3 (by kME + GWAS signal) is in `wgcna/results/m
 | Gene annotation | Ensembl v115, `Homo_sapiens.GRCh38.115.gtf.gz` |
 
 </details>
+
