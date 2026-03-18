@@ -398,6 +398,7 @@ Key operations in `gwas_to_magma_pval.py`:
 ### Step 5 — Build Gene × Study Signal Matrix
 
 ```bash
+pip install pyranges
 python scripts/build_gene_matrix_nomagma.py
 ```
 
