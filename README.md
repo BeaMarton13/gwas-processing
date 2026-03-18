@@ -399,6 +399,7 @@ Key operations in `gwas_to_magma_pval.py`:
 
 ```bash
 pip install pyranges
+mkdir -p wgcna/mat
 python scripts/build_gene_matrix_nomagma.py
 ```
 
