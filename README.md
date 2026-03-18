@@ -1,5 +1,24 @@
 Clone the repository. 
 
+
+On MacOS (Silicone) environment
+```bash
+cd WGCNA
+conda create -n stringdb                                          
+conda activate stringdb
+conda config --env --set subdir osx-64
+conda env update -f environment.yml
+conda install bioconda::plink2
+```
+
+On other enviromnets
+```bash
+cd WGCNA
+conda env create -f environment.yml -n stringdb
+conda activate stringdb
+conda install bioconda::plink2
+```
+
 <details>
 <summary>GWAS-to-Gene-Network Pipeline (stringDB)</summary>
 
@@ -69,6 +88,9 @@ stringDB/
 ---
 
 ## Pipeline Steps
+
+### Step 0 — Download GWAS Catalog GCST list
+Save the [Supplementary Table 19](https://www.nature.com/articles/s41586-025-09272-9) as `data.xlsx` in the stringDB (current) directory.
 
 ### Step 1 — Download GWAS Summary Statistics
 
@@ -260,6 +282,7 @@ On other enviromnets
 ```bash
 cd WGCNA
 conda env create -f environment.yml -n wgcna
+conda activate wgcna
 conda install bioconda::plink2
 ```
 
