@@ -13,7 +13,7 @@ import pandas as pd
 import numpy as np
 import pyranges as pr
 
-GTF_LOC = "/magma/ref/ensembl115.GRCh38.gene.loc"
+GTF_LOC = "magma/ref/ensembl115.GRCh38.gene.loc"
 WINDOW = 10_000  # +/-10kb
 
 def load_genes():
