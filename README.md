@@ -1,4 +1,10 @@
 Clone the repository. 
+Open a terminal and run:
+
+```bash
+git clone https://github.com/BeaMarton13/gwas-processing.git
+cd gwas-processing
+```
 
 
 On MacOS (Silicone) environment
@@ -95,8 +101,8 @@ Save the [Supplementary Table 19](https://www.nature.com/articles/s41586-025-092
 ### Step 1 — Download GWAS Summary Statistics
 
 ```bash
-python3 main.py <disease> <processed_folder> <p_value_limit> <whole_word_match>
-# e.g.: python3 main.py dementia processed_0_01 0.01 True
+python main.py <disease> <processed_folder> <p_value_limit> <whole_word_match>
+# e.g.: python main.py dementia processed_0_01 0.01 True
 ```
 
 Or use the orchestration script (runs Steps 1–2 together):
@@ -122,7 +128,7 @@ https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST<bucket>/GCST<id
 ### Step 2 — Convert Filtered SNPs to BED Format
 
 ```bash
-python3 src/utils/convert_json_to_bed.py <disease> <processed_folder>
+python src/utils/convert_json_to_bed.py <disease> <processed_folder>
 ```
 
 Reads each `.json` in `data/<disease>/<processed_folder>/` and writes a 5-column BED file
@@ -135,6 +141,9 @@ chromosome  start  end  p_value  .
 ---
 
 ### Step 3 — Convert Genome Annotation to BED (one-time setup)
+
+Create a `homo_sapiens` folder in the `data` directory and download the [annotation data available for human](https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz) and place it into the previously created `data/homo_sapiens` folder.
+
 
 ```bash
 gtf2bed < data/homo_sapiens/homo_sapiens.gtf > data/homo_sapiens/homo_sapiens.bed
@@ -149,7 +158,7 @@ Requires the `bedops` toolkit.
 
 **Python route (recommended, uses `pyranges`):**
 ```bash
-python3 src/utils/intersect_files.py <disease> \
+python src/utils/intersect_files.py <disease> \
     data/<disease>/processed/GCST1.bed \
     data/<disease>/processed/GCST2.bed \
     [...]
@@ -201,7 +210,7 @@ Query STRING or OmniPath for the gene list, save the result as a TSV, then expor
 
 **STRING (downloaded TSV):**
 ```bash
-python3 src/utils/export_network_from_tsv.py
+python src/utils/export_network_from_tsv.py
 ```
 Reads a STRING TSV (`#node1 node2 ... combined_score`), builds a directed `igraph` graph
 weighted by `combined_score`, runs InfoMap and Voronoi community detection, and exports
@@ -213,7 +222,7 @@ a `.gml` file to `gene_networks/`.
 ### Step 7 — Community Detection and Visualization
 
 ```bash
-python3 src/utils/handle_network.py
+python src/utils/handle_network.py
 ```
 
 Loads a `.gml` network and a gene p-value CSV. Runs two community detection methods:
@@ -267,6 +276,10 @@ APOE, APOC1, NECTIN2, TOMM40, LNCOB1, plus CEACAM/IGSF/PVR locus genes on chr19.
 
 </details>
 
+If you are in the `stringDB` directory:
+```bash
+cd ..
+```
 
 On MacOS (Silicone) environment
 ```bash
