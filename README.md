@@ -51,7 +51,7 @@ stringDB/
 │   ├── process_pathways.py         # ShinYGO GO enrichment analysis
 │   ├── handle_network.py           # Network clustering, centrality, visualization
 │   ├── export_network_from_tsv.py  # STRING TSV → igraph GML
-│   └── my_functions.so             # Compiled C library for Voronoi community detection
+│   └── voronoi_c.so             # Compiled C library for Voronoi community detection
 │
 ├── data/
 │   ├── <disease>/                  # Per-disease GWAS data
