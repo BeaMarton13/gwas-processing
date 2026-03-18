@@ -3,7 +3,7 @@ Clone the repository.
 
 On MacOS (Silicone) environment
 ```bash
-cd WGCNA
+cd stringDB
 conda create -n stringdb                                          
 conda activate stringdb
 conda config --env --set subdir osx-64
@@ -13,7 +13,7 @@ conda install bioconda::plink2
 
 On other enviromnets
 ```bash
-cd WGCNA
+cd stringDB
 conda env create -f environment.yml -n stringdb
 conda activate stringdb
 conda install bioconda::plink2
