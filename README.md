@@ -249,8 +249,8 @@ APOE, APOC1, NECTIN2, TOMM40, LNCOB1, plus CEACAM/IGSF/PVR locus genes on chr19.
 On MacOS (Silicone) environment
 ```bash
 cd WGCNA
-conda create -n wgcna-git-test                                           
-conda activate wgcna-git-test
+conda create -n wgcna                                          
+conda activate wgcna
 conda config --env --set subdir osx-64
 conda env update -f environment.yml
 conda install bioconda::plink2
@@ -259,7 +259,7 @@ conda install bioconda::plink2
 On other enviromnets
 ```bash
 cd WGCNA
-conda env create -f environment.yml -n myenv
+conda env create -f environment.yml -n wgcna
 conda install bioconda::plink2
 ```
 
