@@ -401,6 +401,7 @@ Key operations in `gwas_to_magma_pval.py`:
 pip install pyranges
 mkdir -p wgcna/mat
 python scripts/build_gene_matrix_nomagma.py
+python scripts/select_top_genes.py 
 ```
 
 Maps SNPs to genes using `pyranges` with a ±10 kb window around each Ensembl gene body. For each gene in each study, computes a **signed Stouffer Z-score**:
@@ -414,18 +415,28 @@ The resulting matrix is column-standardised. Output:
 - `wgcna/mat/gene_by_study.nomagma.signed_z.tsv` — 74,940 genes × 4 studies
 - `wgcna/mat/gene_by_study.nomagma.minp_log10.tsv` — alternative min(−log10(p)) scoring
 
-Then filter to the top 8,000 genes by variance for input to WGCNA:
+### Step 6 — Module Summary and Hub Genes
+
 ```bash
-python scripts/filter_genes.py
+python scripts/module_summary.py
 ```
-Output: `wgcna/mat/gene_by_study.nomagma.top8k.z.tsv`
+
+For each module:
+- Computes the **module eigengene** (first right singular vector from SVD)
+- Computes **kME** (module membership) = Pearson correlation of each gene with the eigengene
+- Identifies top 10 hub genes by |kME|
+
+Outputs:
+- `wgcna/results/module_summary.tsv` — module sizes + eigengene loadings per study
+- `wgcna/results/module_hubs.tsv` — top 10 hub genes per module
 
 ---
 
-### Step 6 — WGCNA Clustering
+### Step 7 — WGCNA Clustering
 
 ```bash
 pip install scipy
+mkdir wgcna/results
 python scripts/wgcna_simple.py
 ```
 
@@ -453,20 +464,12 @@ Output: `wgcna/results/modules.simple.tsv` (gene → module integer).
 
 ---
 
-### Step 7 — Module Summary and Hub Genes
 
+Then filter to the top 8,000 genes by variance for input to WGCNA:
 ```bash
-python scripts/module_summary.py
+python scripts/filter_genes.py
 ```
-
-For each module:
-- Computes the **module eigengene** (first right singular vector from SVD)
-- Computes **kME** (module membership) = Pearson correlation of each gene with the eigengene
-- Identifies top 10 hub genes by |kME|
-
-Outputs:
-- `wgcna/results/module_summary.tsv` — module sizes + eigengene loadings per study
-- `wgcna/results/module_hubs.tsv` — top 10 hub genes per module
+Output: `wgcna/mat/gene_by_study.nomagma.top8k.z.tsv`
 
 ---
 
