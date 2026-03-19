@@ -425,6 +425,7 @@ Output: `wgcna/mat/gene_by_study.nomagma.top8k.z.tsv`
 ### Step 6 — WGCNA Clustering
 
 ```bash
+pip install scipy
 python scripts/wgcna_simple.py
 ```
 
