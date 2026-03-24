@@ -144,6 +144,7 @@ Create a `homo_sapiens` folder in the `data` directory, download the [annotation
 
 
 ```bash
+gunzip -c data/homo_sapiens/homo_sapiens.gtf.gz | grep -v '^#' > data/homo_sapiens/homo_sapiens.gtf
 awk -F'\t' '
 BEGIN { OFS="\t" }
 !/^#/ && $3=="gene" {
