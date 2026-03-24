@@ -284,6 +284,7 @@ APOE, APOC1, NECTIN2, TOMM40, LNCOB1, plus CEACAM/IGSF/PVR locus genes on chr19.
 If you are in the `stringDB` directory:
 ```bash
 cd ..
+conda deactivate
 ```
 
 On MacOS (Silicone) environment
