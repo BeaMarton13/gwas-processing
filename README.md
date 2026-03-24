@@ -103,12 +103,15 @@ Save the [Supplementary Table 19](https://www.nature.com/articles/s41586-025-092
 ```bash
 python main.py <disease> <processed_folder> <p_value_limit> <whole_word_match>
 # e.g.: python main.py dementia processed_0_01 0.01 True
+# e.g.: python main.py dementia processed_0_00001 0.00001 True
 ```
 
 Or use the orchestration script (runs Steps 1–2 together):
 
 ```bash
 ./process_disease.sh <disease> <processed_folder> <p_value_limit> <whole_word_match>
+# e.g.: ./process_disease.sh dementia processed_0_01 0.01 True
+# e.g.: ./process_disease.sh dementia processed_0_00001 0.00001 True
 ```
 
 `main.py` queries `data.xlsx` (GWAS Catalog spreadsheet) for matching GCST IDs using the
@@ -129,6 +132,8 @@ https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST<bucket>/GCST<id
 
 ```bash
 python src/utils/convert_json_to_bed.py <disease> <processed_folder>
+# e.g.: src/utils/convert_json_to_bed.py dementia processed_0_01
+# e.g.: src/utils/convert_json_to_bed.py dementia processed_0_00001
 ```
 
 Reads each `.json` in `data/<disease>/<processed_folder>/` and writes a 5-column BED file
