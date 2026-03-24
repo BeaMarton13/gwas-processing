@@ -215,7 +215,7 @@ python build_voronoi.py
 python src/utils/handle_network.py <graph_with_path> <gene_names_with_p_values_w_path>
 # e.g.: python src/utils/handle_network.py gene_networks/dementia.gml data/gene_pvalues/dementia_0_01.csv
 ```
-> ⚠️ The Voronoi implementation (voronoiMain2023.cpp) was provided by [Botond Molnár](https://github.com/molnarb14)
+> ⚠️ The Voronoi implementation (voronoiMain2023.cpp) was provided by [Botond Molnár](https://github.com/molnarb14) ( @molnarb14 )
 
 Loads a `.gml` network and a gene p-value CSV. Runs two community detection methods:
 
