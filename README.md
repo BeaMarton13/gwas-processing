@@ -147,11 +147,20 @@ chromosome  start  end  p_value  .
 
 ### Step 3 — Convert Genome Annotation to BED (one-time setup)
 
-Create a `homo_sapiens` folder in the `data` directory, download the [annotation data available for human](https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz), rename it as homo_sapiens.gtf and place it into the previously created `data/homo_sapiens` folder.
+Create a `homo_sapiens` folder in the `data` directory, download the [annotation data available for human](https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz), rename it as homo_sapiens.gtf.gz and place it into the previously created `data/homo_sapiens` folder.
 
 
 ```bash
-gtf2bed < data/homo_sapiens/homo_sapiens.gtf > data/homo_sapiens/homo_sapiens.bed
+awk -F'\t' '
+BEGIN { OFS="\t" }
+!/^#/ && $3=="gene" {
+    gene_id="."
+    gene_name="."
+    if (match($9, /gene_id "[^"]+"/)) gene_id = substr($9, RSTART+9, RLENGTH-10)
+    if (match($9, /gene_name "[^"]+"/)) gene_name = substr($9, RSTART+11, RLENGTH-12)
+    print $1, $4-1, $5, gene_name "|" gene_id, ".", $7
+}
+' data/homo_sapiens/homo_sapiens.gtf > data/homo_sapiens/homo_sapiens.bed
 ```
 
 Converts the Ensembl GRCh38 v115 GTF into BED format for genomic intersections.
@@ -164,6 +173,7 @@ Requires the `bedops` toolkit.
 **Python route (recommended, uses `pyranges`):**
 ```bash
 conda install pyranges
+mkdir data/gene_names data/gene_pvalues
 python src/utils/intersect_files.py <disease> \
     data/<disease>/processed/GCST1.bed \
     data/<disease>/processed/GCST2.bed \
