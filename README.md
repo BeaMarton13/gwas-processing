@@ -132,8 +132,8 @@ https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST<bucket>/GCST<id
 
 ```bash
 python src/utils/convert_json_to_bed.py <disease> <processed_folder>
-# e.g.: src/utils/convert_json_to_bed.py dementia processed_0_01
-# e.g.: src/utils/convert_json_to_bed.py dementia processed_0_00001
+# e.g.: python src/utils/convert_json_to_bed.py dementia processed_0_01
+# e.g.: python src/utils/convert_json_to_bed.py dementia processed_0_00001
 ```
 
 Reads each `.json` in `data/<disease>/<processed_folder>/` and writes a 5-column BED file
@@ -147,7 +147,7 @@ chromosome  start  end  p_value  .
 
 ### Step 3 — Convert Genome Annotation to BED (one-time setup)
 
-Create a `homo_sapiens` folder in the `data` directory and download the [annotation data available for human](https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz) and place it into the previously created `data/homo_sapiens` folder.
+Create a `homo_sapiens` folder in the `data` directory, download the [annotation data available for human](https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz), rename it as homo_sapiens.gtf and place it into the previously created `data/homo_sapiens` folder.
 
 
 ```bash
@@ -163,10 +163,12 @@ Requires the `bedops` toolkit.
 
 **Python route (recommended, uses `pyranges`):**
 ```bash
+conda install pyranges
 python src/utils/intersect_files.py <disease> \
     data/<disease>/processed/GCST1.bed \
     data/<disease>/processed/GCST2.bed \
     [...]
+# e.g.: python src/utils/intersect_files.py dementia data/homo_sapiens/homo_sapiens.bed data/dementia/processed_0_01/GCST90473236.bed  data/dementia/processed_0_01/GCST90473240.bed  data/dementia/processed_0_01/GCST90473241.bed  data/dementia/processed_0_01/GCST90473242.bed
 ```
 
 Generates:
