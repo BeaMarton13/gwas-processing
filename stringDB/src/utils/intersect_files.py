@@ -74,17 +74,27 @@ def read_file(file_w_path):
                     dtype={"Chromosome": str, "Start": int, "End": int, "p_value": float}
                 )
             except:
+                # df = pd.read_csv(
+                #     file_w_path,
+                #     sep="\t",
+                #     header=None,
+                #     usecols=[0, 1, 2, 7, 9],
+                #     names=["Chromosome", "Start", "End", "Feature", "Attributes"],
+                # )
+                # df["p_value"] = np.nan
+                # df = df[df["Feature"] == "gene"]
+                # df["Gene"] = df["Attributes"].apply(extract_gene_name)
                 df = pd.read_csv(
                     file_w_path,
                     sep="\t",
                     header=None,
-                    usecols=[0, 1, 2, 7, 9],
-                    names=["Chromosome", "Start", "End", "Feature", "Attributes"],
+                    usecols=[0, 1, 2, 3, 5],
+                    names=["Chromosome", "Start", "End", "GeneInfo", "Strand"],
                 )
-                df["p_value"] = np.nan
-                df = df[df["Feature"] == "gene"]
-                df["Gene"] = df["Attributes"].apply(extract_gene_name)
 
+                df["Gene"] = df["GeneInfo"].str.split("|").str[0]
+            print(file_w_path, "loaded with shape:", df.shape)
+            print(df)
             return df
 
         else:

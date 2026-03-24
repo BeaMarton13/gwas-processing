@@ -3,13 +3,10 @@ import pandas as pd
 import argparse
 import math
 import random
-
-import igraph as ig
 import plotly.graph_objects as go
 import matplotlib.cm as cm
-
 import os
-from ctypes import *
+import sys
 import ctypes
 import numpy as np
 
@@ -24,42 +21,57 @@ def community_voronoi(g, weights):
     """
     if weights is None or len(weights) == 0:
         weights = g.es['weight']
-            
-    # Get absolute path to the .so file
-    so_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'my_functions.so')
-            # Convert numpy array to C compatible format
 
-    lib = ctypes.CDLL(so_file)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    if sys.platform == "win32":
+        candidates = ["voronoi_c.dll"]
+    elif sys.platform == "darwin":
+        candidates = ["voronoi_c.so", "voronoi_c.dylib"]
+    else:
+        candidates = ["voronoi_c.so"]
+
+    lib = None
+    tried = []
+
+    for name in candidates:
+        so_file = os.path.join(base_dir, name)
+        tried.append(so_file)
+        if os.path.exists(so_file):
+            lib = ctypes.CDLL(so_file)
+            break
+
+    if lib is None:
+        raise FileNotFoundError(
+            "Could not find Voronoi shared library. Tried:\n" + "\n".join(tried)
+        )
 
     adjacency_matrix = g.get_adjacency(attribute='weight').data
     size = len(adjacency_matrix)
-    
-    # Create array of pointers to rows
+
     ptr_type = ctypes.POINTER(ctypes.c_double)
     row_pointers = (ptr_type * size)()
-    
-    # Create C arrays for each row
+
     rows = []
     for i in range(size):
         row = (ctypes.c_double * size)(*adjacency_matrix[i])
         rows.append(row)
         row_pointers[i] = row
 
-    # Set function argument types and return type
     lib.community_voronoi.argtypes = [ctypes.POINTER(ptr_type), ctypes.c_int]
     lib.community_voronoi.restype = ctypes.POINTER(ctypes.c_int)
 
-    # Call C function
     result_ptr = lib.community_voronoi(row_pointers, size)
     if not result_ptr:
         return None
 
-    # Convert result to numpy array
     result = np.array([result_ptr[i] for i in range(size)])
-    
-    # Free C allocated memory
+
     libc = ctypes.CDLL(None)
+    libc.free.argtypes = [ctypes.c_void_p]
+    libc.free.restype = None
     libc.free(result_ptr)
+
     result = abs(result)
     new_membership = pd.factorize(result)[0].tolist()
     return ig.VertexClustering(g, membership=new_membership)

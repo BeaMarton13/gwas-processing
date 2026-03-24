@@ -96,9 +96,5 @@ if __name__ == '__main__':
     export_graph_to_gml(g, filename)
 
     print(g.community_infomap(edge_weights=g.es['weight']))
-    print('-----------------------------------------------')
-    print('-----------------------------------------------')
-    print('-----------------------------------------------')
-    print(g.community_voronoi(weights=g.es['weight']))
 
     
