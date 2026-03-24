@@ -99,7 +99,7 @@ python main.py <disease> <processed_folder> <p_value_limit> <whole_word_match>
 # e.g.: python main.py dementia processed_0_00001 0.00001 True
 ```
 
-Or use the orchestration script (runs Steps 1–2 together):
+Or use the orchestration script (runs Steps 2–3 together):
 
 ```bash
 ./process_disease.sh <disease> <processed_folder> <p_value_limit> <whole_word_match>
