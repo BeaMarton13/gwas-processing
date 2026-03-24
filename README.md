@@ -59,36 +59,32 @@ Cluster statistics + Plotly visualizations
 
 ```
 stringDB/
-├── main.py                         # Entry point: download + p-value filter
-├── process_disease.sh              # Orchestration script (download → BED)
-├── compare_bed_files.sh            # bedtools intersect wrapper (two files)
-├── intersect_beds.sh               # bedtools intersect wrapper (N files)
-├── genes_with_pvalues.bed          # Combined SNP-GTF intersection BED
-├── *_diseases_w_id.txt             # Auto-generated GCST ID manifests per disease
-│
-├── src/utils/
-│   ├── downloader.py               # EBI FTP downloader
-│   ├── excel_handler.py            # GWAS Catalog Excel query
-│   ├── process_file.py             # Chunked TSV reader + GTF reader
-│   ├── convert_json_to_bed.py      # JSON → BED conversion
-│   ├── plotting.py                 # Keyword bubble chart
-│   ├── intersect_files.py          # pyranges-based genomic intersection + gene p-values
-│   ├── process_pathways.py         # ShinYGO GO enrichment analysis
-│   ├── handle_network.py           # Network clustering, centrality, visualization
-│   ├── export_network_from_tsv.py  # STRING TSV → igraph GML
-│   └── voronoi_c.so             # Compiled C library for Voronoi community detection
-│
 ├── data/
-│   ├── <disease>/                  # Per-disease GWAS data
-│   │   ├── *.tsv.gz                # Raw GWAS summary stats (~3.2 GB/study)
-│   │   └── processed*/             # Filtered JSON + BED files per p-value threshold
-│   ├── homo_sapiens/               # Ensembl GRCh38 v115 GTF + BED annotation
-│   ├── gene_names/                 # Per-disease gene lists (CSV header + one gene per line)
-│   ├── gene_pvalues/               # Per-gene aggregated p-value statistics (CSV)
-│
-├── bed_comparison/                 # bedtools intersection outputs
-├── gene_names/                     # Root-level gene name extractions
-├── gene_networks/                  # STRING TSVs and GML network files
+│   ├── dementia/
+│   │   ├── processed_0_00001/
+│   │   └── processed_0_01/
+│   ├── gene_names/
+│   ├── gene_pvalues/
+│   └── homo_sapiens/
+├── data.xlsx
+├── environment.yml
+├── gene_networks/
+├── main.py
+├── process_disease.sh
+├── process_network.sh
+└── src
+    └── utils
+        ├── build_voronoi.py
+        ├── convert_json_to_bed.py
+        ├── downloader.py
+        ├── excel_handler.py
+        ├── export_network_from_tsv.py
+        ├── handle_network.py
+        ├── intersect_files.py
+        ├── plotting.py
+        ├── process_file.py
+        ├── process_network-p_val_based.py
+        └── voronoiMain2023.cpp
 ```
 
 ---
@@ -219,6 +215,7 @@ python build_voronoi.py
 python src/utils/handle_network.py <graph_with_path> <gene_names_with_p_values_w_path>
 # e.g.: python src/utils/handle_network.py gene_networks/dementia.gml data/gene_pvalues/dementia_0_01.csv
 ```
+> ⚠️ The Voronoi implementation (voronoiMain2023.cpp) was provided by @molnarb14
 
 Loads a `.gml` network and a gene p-value CSV. Runs two community detection methods:
 
@@ -232,6 +229,21 @@ Generates an interactive Plotly network visualization:
 - Node color = cluster's p-value statistic
 - Node border = cluster identity
 - Key genes (default: NECTIN2, TOMM40, APOE, APOC1) highlighted in red with larger markers
+
+---
+
+## Citation
+
+If you use this pipeline, please cite:
+
+- Voronoi method:  
+  Molnár, B., Márton, I.B., Horvát, S. et al.
+  "Community detection in directed weighted networks using Voronoi partitioning"
+  Scientific Reports 14, 8124 (2024)
+  https://doi.org/10.1038/s41598-024-58624-4
+
+- GWAS source:  
+  Nature (2025) paper: https://doi.org/10.1038/s41586-025-09272-9
 
 ---
 
