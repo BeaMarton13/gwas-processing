@@ -372,9 +372,7 @@ mkdir annotation
 python scripts/gtf_gene_id_to_name.py \
   gtf/Homo_sapiens.GRCh38.115.gtf.gz \
   annotation/ensembl115_gene_id_to_name.tsv
-python scripts/make_gene_loc_from_gtf.py \
-  gtf/Homo_sapiens.GRCh38.115.gtf.gz \ 
-  magma/ref/ensembl115.GRCh38.gene.loc 
+python scripts/make_gene_loc_from_gtf.py gtf/Homo_sapiens.GRCh38.115.gtf.gz magma/ref/ensembl115.GRCh38.gene.loc
 ```
 
 - `gtf_gene_id_to_name.py` — Parses `gtf/Homo_sapiens.GRCh38.115.gtf.gz` and outputs `annotation/ensembl115_gene_id_to_name.tsv` (Ensembl ID → gene symbol + biotype).
