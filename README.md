@@ -381,6 +381,20 @@ python scripts/make_gene_loc_from_gtf.py gtf/Homo_sapiens.GRCh38.115.gtf.gz magm
 ---
 
 ### Step 4 — Preprocess GWAS Summary Statistics
+---
+Download the raw GWAS files from [NHGRI-EBI GWAS Catalog – Summary Statistics (FTP repository)](https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/):
+**EBI FTP URL pattern:**
+```
+https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST<bucket>/GCST<id>/GCST<id>.tsv.gz
+```
+Or reuse the GWAS files generated earlier in  
+[GWAS-to-Gene-Network Pipeline → Step 2 (Download GWAS Summary Statistics)](#step-2--download-gwas-summary-statistics):
+
+```bash
+mkdir gwas_raw
+cp ../stringDB/data/dementia/GCST*.tsv.gz gwas_raw/
+```
+---
 
 ```bash
 conda install pip
