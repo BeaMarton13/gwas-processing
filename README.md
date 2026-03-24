@@ -185,7 +185,7 @@ Generates:
 
 ### Step 6 — Build Protein Interaction Network
 
-Query STRING for the gene list, save the result as a TSV, then export to GML.
+Query STRING for the gene list available in `data/gene_names/<disease>` (e.g.: `data/gene_names/dementia_0_01`), save the result as a TSV, then export to GML.
 <img width="1032" height="605" alt="image" src="https://github.com/user-attachments/assets/26e67c48-cb70-4b77-85b3-537c5986ebca" />
 <img width="1087" height="331" alt="image" src="https://github.com/user-attachments/assets/b39302c7-2800-46da-8dcf-4561eda39001" />
 
