@@ -178,56 +178,30 @@ python src/utils/intersect_files.py <disease> \
     data/<disease>/processed/GCST1.bed \
     data/<disease>/processed/GCST2.bed \
     [...]
-# e.g.: python src/utils/intersect_files.py dementia data/homo_sapiens/homo_sapiens.bed data/dementia/processed_0_01/GCST90473236.bed  data/dementia/processed_0_01/GCST90473240.bed  data/dementia/processed_0_01/GCST90473241.bed  data/dementia/processed_0_01/GCST90473242.bed
+# e.g.: python src/utils/intersect_files.py dementia_0_01 data/homo_sapiens/homo_sapiens.bed data/dementia/processed_0_01/GCST90473236.bed  data/dementia/processed_0_01/GCST90473240.bed  data/dementia/processed_0_01/GCST90473241.bed  data/dementia/processed_0_01/GCST90473242.bed
+# e.g.: python src/utils/intersect_files.py dementia_0_00001 data/homo_sapiens/homo_sapiens.bed data/dementia/processed_0_00001/GCST90473236.bed  data/dementia/processed_0_00001/GCST90473240.bed  data/dementia/processed_0_00001/GCST90473241.bed  data/dementia/processed_0_00001/GCST90473242.bed
 ```
 
 Generates:
 - `data/gene_names/<disease>.txt` — unique gene symbols found in the intersection
 - `data/gene_pvalues/<disease>.csv` — per-gene min/mean/median p-values across studies
 
-**Shell route (two files):**
-```bash
-./compare_bed_files.sh data/<disease>/processed/<study>.bed \
-                       data/homo_sapiens/homo_sapiens.bed \
-                       bed_comparison/output.bed
-```
-
-**Shell route (N files):**
-```bash
-./intersect_beds.sh bed_comparison/output.bed \
-    data/<disease>/processed/GCST1.bed \
-    data/<disease>/processed/GCST2.bed [...]
-```
-
-Both shell scripts wrap `bedtools intersect -wa -wb`, producing wide BED records pairing
-each SNP with its overlapping gene annotation.
-
----
-
-### Step 5 — Extract Gene Names (shell route)
-
-When using the shell intersection route, extract gene names from the BED output:
-
-```bash
-cat bed_comparison/common_alzheimer.bed \
-  | cut -f10 | uniq \
-  | cut -d";" -f3 | grep "gene_name" \
-  | sed -E 's/.*gene_name "([^"]+)".*/\1/' \
-  > gene_names/alzheimer.txt
-```
-
-The column index (`-f10` vs `-f9`) may differ depending on the input BED type — see
-`notes.txt` for variants.
 
 ---
 
 ### Step 6 — Build Protein Interaction Network
 
-Query STRING or OmniPath for the gene list, save the result as a TSV, then export to GML.
+Query STRING for the gene list, save the result as a TSV, then export to GML.
+<img width="1032" height="605" alt="image" src="https://github.com/user-attachments/assets/26e67c48-cb70-4b77-85b3-537c5986ebca" />
+<img width="1087" height="331" alt="image" src="https://github.com/user-attachments/assets/b39302c7-2800-46da-8dcf-4561eda39001" />
+
+Creeate a `gene_networks` folder in the `stringDB` directory, place the downloaded `tsv` file into it and rename the file as `disease.tsv` (e.g.: `dementia.tsv`)
 
 **STRING (downloaded TSV):**
 ```bash
-python src/utils/export_network_from_tsv.py
+conda install -c conda-forge python-igraph
+python src/utils/export_network_from_tsv.py <gene_network_with_path>
+# e.g.: python src/utils/export_network_from_tsv.py gene_networks/dementia.tsv
 ```
 Reads a STRING TSV (`#node1 node2 ... combined_score`), builds a directed `igraph` graph
 weighted by `combined_score`, runs InfoMap and Voronoi community detection, and exports
@@ -239,7 +213,10 @@ a `.gml` file to `gene_networks/`.
 ### Step 7 — Community Detection and Visualization
 
 ```bash
-python src/utils/handle_network.py
+conda install plotly
+conda install matplotlib
+python src/utils/handle_network.py <graph_with_path> <gene_names_with_p_values_w_path>
+# e.g.: python src/utils/handle_network.py gene_networks/dementia.gml data/gene_pvalues/dementia_0_01.csv
 ```
 
 Loads a `.gml` network and a gene p-value CSV. Runs two community detection methods:
