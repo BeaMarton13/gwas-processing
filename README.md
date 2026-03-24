@@ -383,6 +383,7 @@ python scripts/make_gene_loc_from_gtf.py gtf/Homo_sapiens.GRCh38.115.gtf.gz magm
 ### Step 4 — Preprocess GWAS Summary Statistics
 
 ```bash
+conda install pip
 pip install pandas
 mkdir gwas_clean
 bash scripts/run_gwas_to_magma.sh
