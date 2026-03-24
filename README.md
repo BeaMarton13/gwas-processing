@@ -95,10 +95,10 @@ stringDB/
 
 ## Pipeline Steps
 
-### Step 0 — Download GWAS Catalog GCST list
+### Step 1 — Download GWAS Catalog GCST list
 Save the [Supplementary Table 19](https://www.nature.com/articles/s41586-025-09272-9) as `data.xlsx` in the stringDB (current) directory.
 
-### Step 1 — Download GWAS Summary Statistics
+### Step 2 — Download GWAS Summary Statistics
 
 ```bash
 python main.py <disease> <processed_folder> <p_value_limit> <whole_word_match>
@@ -128,7 +128,7 @@ https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST<bucket>/GCST<id
 
 ---
 
-### Step 2 — Convert Filtered SNPs to BED Format
+### Step 3 — Convert Filtered SNPs to BED Format
 
 ```bash
 python src/utils/convert_json_to_bed.py <disease> <processed_folder>
@@ -145,7 +145,7 @@ chromosome  start  end  p_value  .
 
 ---
 
-### Step 3 — Convert Genome Annotation to BED (one-time setup)
+### Step 4 — Convert Genome Annotation to BED (one-time setup)
 
 Create a `homo_sapiens` folder in the `data` directory, download the [annotation data available for human](https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz), rename it as homo_sapiens.gtf.gz and place it into the previously created `data/homo_sapiens` folder.
 
@@ -168,7 +168,7 @@ Requires the `bedops` toolkit.
 
 ---
 
-### Step 4 — Intersect SNPs with Gene Annotation
+### Step 5 — Intersect SNPs with Gene Annotation
 
 **Python route (recommended, uses `pyranges`):**
 ```bash
