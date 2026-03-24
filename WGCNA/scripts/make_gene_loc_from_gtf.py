@@ -27,7 +27,7 @@ def parse_attrs(attr_str: str) -> dict:
         dict[str, str]: Mapping of attribute keys to their unquoted values.
     """
     attrs = {}
-    for m in re.finditer(r’(\S+)\s+"([^"]+)"’, attr_str):
+    for m in re.finditer(r'(\S+)\s+"([^"]+)"', attr_str):
         attrs[m.group(1)] = m.group(2)
     return attrs
 
