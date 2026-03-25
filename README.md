@@ -402,6 +402,7 @@ pip install pandas
 mkdir gwas_clean
 bash scripts/run_gwas_to_magma.sh
 ```
+(Takes some time)
 
 Loops over all `gwas_raw/*.tsv.gz` files and calls `scripts/gwas_to_magma_pval.py` on each. Outputs MAGMA-ready SNP files to `gwas_clean/` with columns `SNP | P | N`, where SNP IDs are `CHR:POS:A1:A2`.
 
@@ -422,6 +423,7 @@ mkdir -p wgcna/mat
 python scripts/build_gene_matrix_nomagma.py
 python scripts/select_top_genes.py 
 ```
+(Takes some time)
 
 Maps SNPs to genes using `pyranges` with a ±10 kb window around each Ensembl gene body. For each gene in each study, computes a **signed Stouffer Z-score**:
 
