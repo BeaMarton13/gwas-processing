@@ -234,6 +234,10 @@ Generates an interactive Plotly network visualization:
 
 If you use this pipeline, please cite:
 
+- Infomap method:
+- M. Rosvall and C. T. Bergstrom, Maps of information flow reveal community structure in complex networks, PNAS 105, 1118 (2008) doi:10.1073/pnas.0706851105 , https://arxiv.org/abs/0707.0609
+- M. Rosvall, D. Axelsson, and C. T. Bergstrom, The map equation, Eur. Phys. J. Special Topics 178, 13 (2009). doi:10.1140/epjst/e2010-01179-1 , https://arxiv.org/abs/0906.1405.
+
 - Voronoi method:  
   Molnár, B., Márton, I.B., Horvát, S. et al.
   "Community detection in directed weighted networks using Voronoi partitioning"
