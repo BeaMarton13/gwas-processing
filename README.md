@@ -312,7 +312,7 @@ APOE, APOC1, NECTIN2, TOMM40, LNCOB1, plus CEACAM/IGSF/PVR locus genes on chr19.
 | Data | Source |
 |---|---|
 | GWAS summary statistics | [NHGRI-EBI GWAS Catalog](https://www.ebi.ac.uk/gwas/) FTP |
-| Genome annotation | Ensembl GRCh38 v115 GTF |
+| Genome annotation | [Ensembl GRCh38 v115 GTF](https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz) |
 | Protein interactions | [STRING](https://string-db.org/) — TSV download for gene list |
 | Reference paper | [Nature (2025)](https://doi.org/10.1038/s41586-025-09272-9) |
 
