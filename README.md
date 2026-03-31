@@ -93,17 +93,27 @@ Save the [Supplementary Table 19](https://www.nature.com/articles/s41586-025-092
 
 ### Step 2 — Download GWAS Summary Statistics
 
+
 ```bash
 python main.py dementia processed_0_01 0.01 True
 python main.py dementia processed_0_00001 0.00001 True
+```
+
+General Usage:
+```bash
 # python main.py <disease> <processed_folder> <p_value_limit> <whole_word_match>
 ```
 
 Or use the orchestration script (runs Steps 2–3 together):
 
+
 ```bash
 ./process_disease.sh dementia processed_0_01 0.01 True
 ./process_disease.sh dementia processed_0_00001 0.00001 True
+```
+
+General Usage:
+```bash
 # ./process_disease.sh <disease> <processed_folder> <p_value_limit> <whole_word_match>
 ```
 
@@ -126,6 +136,10 @@ https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST<bucket>/GCST<id
 ```bash
 python src/utils/convert_json_to_bed.py dementia processed_0_01
 python src/utils/convert_json_to_bed.py dementia processed_0_00001
+```
+
+General Usage:
+```bash
 # python src/utils/convert_json_to_bed.py <disease> <processed_folder>
 ```
 
@@ -165,11 +179,17 @@ Requires the `bedops` toolkit.
 ### Step 5 — Intersect SNPs with Gene Annotation
 
 **Python route (recommended, uses `pyranges`):**
+
+
 ```bash
 conda install pyranges
 mkdir data/gene_names data/gene_pvalues
 python src/utils/intersect_files.py dementia_0_01 data/homo_sapiens/homo_sapiens.bed data/dementia/processed_0_01/GCST90473236.bed  data/dementia/processed_0_01/GCST90473240.bed  data/dementia/processed_0_01/GCST90473241.bed  data/dementia/processed_0_01/GCST90473242.bed
 python src/utils/intersect_files.py dementia_0_00001 data/homo_sapiens/homo_sapiens.bed data/dementia/processed_0_00001/GCST90473236.bed  data/dementia/processed_0_00001/GCST90473240.bed  data/dementia/processed_0_00001/GCST90473241.bed  data/dementia/processed_0_00001/GCST90473242.bed
+```
+
+General Usage:
+```bash
 # python src/utils/intersect_files.py <disease> \
 #    data/<disease>/processed/GCST1.bed \
 #    data/<disease>/processed/GCST2.bed \
@@ -189,14 +209,21 @@ Query [STRING](https://string-db.org) for the gene list available in `data/gene_
 <img width="1032" height="605" alt="image" src="https://github.com/user-attachments/assets/26e67c48-cb70-4b77-85b3-537c5986ebca" />
 <img width="1087" height="331" alt="image" src="https://github.com/user-attachments/assets/b39302c7-2800-46da-8dcf-4561eda39001" />
 
-Creeate a `gene_networks` folder in the `stringDB` directory, place the downloaded `tsv` file into it and rename the file as `disease.tsv` (e.g.: `dementia.tsv`)
+Create a `gene_networks` folder in the `stringDB` directory, place the downloaded `tsv` file into it and rename the file as `disease.tsv` (e.g.: `dementia.tsv`)
 
 **STRING (downloaded TSV):**
+
+
 ```bash
 conda install -c conda-forge python-igraph
 python src/utils/export_network_from_tsv.py gene_networks/dementia.tsv
+```
+
+General Usage:
+```bash
 # python src/utils/export_network_from_tsv.py <gene_network_with_path>
 ```
+
 Reads a STRING TSV (`#node1 node2 ... combined_score`), builds a directed `igraph` graph
 weighted by `combined_score`, runs InfoMap and Voronoi community detection, and exports
 a `.gml` file to `gene_networks/`.
@@ -206,11 +233,16 @@ a `.gml` file to `gene_networks/`.
 
 ### Step 7 — Community Detection and Visualization
 
+
 ```bash
 conda install plotly
 conda install matplotlib
 python src/utils/build_voronoi.py
 python src/utils/handle_network.py gene_networks/dementia.gml data/gene_pvalues/dementia_0_01.csv
+```
+
+General Usage:
+```bash
 # python src/utils/handle_network.py <graph_with_path> <gene_names_with_p_values_w_path>
 ```
 > ⚠️ The Voronoi implementation (voronoiMain2023.cpp) was provided by [Botond Molnár](https://github.com/molnarb14) ( @molnarb14 )
