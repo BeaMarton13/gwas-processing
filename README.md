@@ -171,9 +171,9 @@ mkdir data/gene_names data/gene_pvalues
 python src/utils/intersect_files.py dementia_0_01 data/homo_sapiens/homo_sapiens.bed data/dementia/processed_0_01/GCST90473236.bed  data/dementia/processed_0_01/GCST90473240.bed  data/dementia/processed_0_01/GCST90473241.bed  data/dementia/processed_0_01/GCST90473242.bed
 python src/utils/intersect_files.py dementia_0_00001 data/homo_sapiens/homo_sapiens.bed data/dementia/processed_0_00001/GCST90473236.bed  data/dementia/processed_0_00001/GCST90473240.bed  data/dementia/processed_0_00001/GCST90473241.bed  data/dementia/processed_0_00001/GCST90473242.bed
 # python src/utils/intersect_files.py <disease> \
-    data/<disease>/processed/GCST1.bed \
-    data/<disease>/processed/GCST2.bed \
-    [...]
+#    data/<disease>/processed/GCST1.bed \
+#    data/<disease>/processed/GCST2.bed \
+#    [...]
 ```
 
 Generates:
