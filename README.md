@@ -1,3 +1,5 @@
+Install Conda (if not installed).
+
 Clone the repository. 
 Open a terminal and run:
 
