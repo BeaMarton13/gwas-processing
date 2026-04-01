@@ -215,7 +215,7 @@ Query [STRING](https://string-db.org) for the gene list available in `data/gene_
 <img width="1032" height="605" alt="image" src="https://github.com/user-attachments/assets/26e67c48-cb70-4b77-85b3-537c5986ebca" />
 <img width="1087" height="331" alt="image" src="https://github.com/user-attachments/assets/b39302c7-2800-46da-8dcf-4561eda39001" />
 
-Create a `gene_networks` folder in the `stringDB` directory, place the downloaded `tsv` file into it and rename the file as `<disease>.tsv` (e.g.: `dementia.tsv`)
+Create a `gene_networks` folder in the current (`stringDB`) directory, place the downloaded `tsv` file into it and rename the file as `<disease>.tsv` (e.g.: `dementia.tsv`)
 
 **STRING (downloaded TSV):**
 
@@ -419,7 +419,7 @@ Converts each per-chromosome VCF into PLINK1 BED format using `plink2`. Filters 
 
 ### Step 3 — Build Gene Annotations
 
-Create a `gtf` folder and download the [annotation data available for human](https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz) and place it into the previously created `gtf` folder.
+Create a `gtf` folder in the current (wgcna) directory and download the [annotation data available for human](https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz) and place it into the previously created `gtf` folder.
 
 ```bash
 mkdir annotation
