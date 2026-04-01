@@ -473,25 +473,9 @@ Z_gene = sum(Z_snps) / sqrt(N_snps)
 The resulting matrix is column-standardised. Output:
 - `wgcna/mat/gene_by_study.nomagma.signed_z.tsv` — 74,940 genes × 4 studies
 - `wgcna/mat/gene_by_study.nomagma.minp_log10.tsv` — alternative min(−log10(p)) scoring
-
-### Step 6 — Module Summary and Hub Genes
-
-```bash
-python scripts/module_summary.py
-```
-
-For each module:
-- Computes the **module eigengene** (first right singular vector from SVD)
-- Computes **kME** (module membership) = Pearson correlation of each gene with the eigengene
-- Identifies top 10 hub genes by |kME|
-
-Outputs:
-- `wgcna/results/module_summary.tsv` — module sizes + eigengene loadings per study
-- `wgcna/results/module_hubs.tsv` — top 10 hub genes per module
-
 ---
 
-### Step 7 — WGCNA Clustering
+### Step 6 — WGCNA Clustering
 
 ```bash
 pip install scipy
@@ -529,6 +513,23 @@ Then filter to the top 8,000 genes by variance for input to WGCNA:
 python scripts/filter_genes.py
 ```
 Output: `wgcna/mat/gene_by_study.nomagma.top8k.z.tsv`
+
+---
+
+### Step 7 — Module Summary and Hub Genes
+
+```bash
+python scripts/module_summary.py
+```
+
+For each module:
+- Computes the **module eigengene** (first right singular vector from SVD)
+- Computes **kME** (module membership) = Pearson correlation of each gene with the eigengene
+- Identifies top 10 hub genes by |kME|
+
+Outputs:
+- `wgcna/results/module_summary.tsv` — module sizes + eigengene loadings per study
+- `wgcna/results/module_hubs.tsv` — top 10 hub genes per module
 
 ---
 
