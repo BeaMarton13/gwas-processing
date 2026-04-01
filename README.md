@@ -6,6 +6,12 @@ git clone https://github.com/BeaMarton13/gwas-processing.git
 cd gwas-processing
 ```
 
+(Or with SSH):
+```bash
+git clone git@github.com:BeaMarton13/gwas-processing.git
+cd gwas-processing
+```
+
 
 On MacOS (Silicone) environment
 ```bash
