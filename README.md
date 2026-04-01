@@ -436,7 +436,7 @@ python scripts/make_gene_loc_from_gtf.py gtf/Homo_sapiens.GRCh38.115.gtf.gz magm
 
 ---
 
-### Step 4 — Preprocess GWAS Summary Statistics
+### Step 4 — Preprocess GWAS Summary Statistics (This will take some time)
 ---
 Download the raw GWAS files from [NHGRI-EBI GWAS Catalog – Summary Statistics (FTP repository)](https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/):
 **EBI FTP URL pattern:**
@@ -471,7 +471,7 @@ Key operations in `gwas_to_magma_pval.py`:
 
 ---
 
-### Step 5 — Build Gene × Study Signal Matrix
+### Step 5 — Build Gene × Study Signal Matrix (This will take some time)
 
 ```bash
 pip install pyranges
