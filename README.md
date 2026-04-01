@@ -360,21 +360,32 @@ Four GWAS studies from the NHGRI-EBI GWAS Catalog are used as input (GCST9047323
 
 ```
 project/
-├── annotation/                        # Gene ID → name/biotype lookup
-├── gtf/                               # Ensembl v115 GTF annotation
-├── gwas_clean/                        # MAGMA-format cleaned GWAS files
-├── gwas_raw/                          # Raw GWAS summary statistics
-├── ld_vcf/                            # 1000 Genomes GRCh38 phased VCFs (chr1–22)
+├── annotation/
+├── environment.yml
+├── gtf/
+├── gwas_clean/
+├── gwas_raw/
+├── ld_vcf/
 ├── magma/
-│   ├── annot/                         # MAGMA annotation output (unused)
-│   ├── genes/                         # MAGMA gene-level output (unused)
-│   ├── genesets/                      # MAGMA gene-set output (unused)
-│   └── ref/                           # LD reference panel (PLINK BED + pgen)
-├── scripts/                           # All analysis scripts
-└── wgcna/
-    ├── mat/                           # Gene × study signal matrices
-    ├── modules/                       # (alternative output dir, empty)
-    └── results/                       # Module assignments, hubs, and filtered gene lists
+│   └── ref/
+├── scripts
+│   ├── build_gene_matrix_nomagma.py
+│   ├── download_1000G.sh
+│   ├── filter_genes.py
+│   ├── generate_chrs.sh
+│   ├── get_clusters.py
+│   ├── get_module.py
+│   ├── gtf_gene_id_to_name.py
+│   ├── gwas_to_magma_pval.py
+│   ├── make_gene_loc_from_gtf.py
+│   ├── merge_chrs.sh
+│   ├── module_summary.py
+│   ├── run_gwas_to_magma.sh
+│   ├── select_top_genes.py
+│   └── wgcna_simple.py
+└── wgcna
+    ├── mat/
+    └── results/
 ```
 
 ---
