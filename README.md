@@ -334,11 +334,10 @@ conda deactivate
 On MacOS (Silicone) environment
 ```bash
 cd WGCNA
-conda create -n wgcna                                          
+conda create --platform osx-64 -n wgcna python=3.12
 conda activate wgcna
-conda config --env --set subdir osx-64
-conda env update -f environment.yml
-conda install bioconda::plink2
+conda env update -n wgcna -f environment.yml
+conda install -c bioconda plink2
 ```
 
 On other enviromnets
