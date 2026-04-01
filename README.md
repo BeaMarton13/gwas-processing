@@ -215,7 +215,7 @@ Query [STRING](https://string-db.org) for the gene list available in `data/gene_
 <img width="1032" height="605" alt="image" src="https://github.com/user-attachments/assets/26e67c48-cb70-4b77-85b3-537c5986ebca" />
 <img width="1087" height="331" alt="image" src="https://github.com/user-attachments/assets/b39302c7-2800-46da-8dcf-4561eda39001" />
 
-Create a `gene_networks` folder in the `stringDB` directory, place the downloaded `tsv` file into it and rename the file as `disease.tsv` (e.g.: `dementia.tsv`)
+Create a `gene_networks` folder in the `stringDB` directory, place the downloaded `tsv` file into it and rename the file as `<disease>.tsv` (e.g.: `dementia.tsv`)
 
 **STRING (downloaded TSV):**
 
