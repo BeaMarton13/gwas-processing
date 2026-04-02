@@ -525,15 +525,6 @@ Output: `wgcna/results/modules.simple.tsv` (gene → module integer).
 
 ---
 
-
-Then filter to the top 8,000 genes by variance for input to WGCNA:
-```bash
-python scripts/filter_genes.py
-```
-Output: `wgcna/mat/gene_by_study.nomagma.top8k.z.tsv`
-
----
-
 ### Step 7 — Module Summary and Hub Genes
 
 ```bash
@@ -548,6 +539,13 @@ For each module:
 Outputs:
 - `wgcna/results/module_summary.tsv` — module sizes + eigengene loadings per study
 - `wgcna/results/module_hubs.tsv` — top 10 hub genes per module
+
+
+Then filter to the top 8,000 genes by variance for input to WGCNA:
+```bash
+python scripts/filter_genes.py
+```
+Output: `wgcna/mat/gene_by_study.nomagma.top8k.z.tsv`
 
 ---
 
