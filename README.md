@@ -467,8 +467,6 @@ Key operations in `gwas_to_magma_pval.py`:
 - Clamps p-values to [1e-300, 1.0]
 - Deduplicates on SNP ID
 
-> **Note:** The `magma/annot/`, `magma/genes/`, and `magma/genesets/` directories are empty — the MAGMA gene analysis step has not been run. The MAGMA-free route below is used instead.
-
 ---
 
 ### Step 5 — Build Gene × Study Signal Matrix (This will take some time)
